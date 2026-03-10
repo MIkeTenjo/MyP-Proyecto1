@@ -1,0 +1,28 @@
+name: CI Kotlin
+
+# 1. ¿Cuándo debe ejecutarse este robot?
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    # 2. ¿En qué computadora virtual debe correr?
+    runs-on: ubuntu-latest
+
+    # 3. ¿Qué pasos debe seguir?
+    steps:
+    - name: Descargar el código del repositorio
+      uses: actions/checkout@v4
+
+    - name: Preparar Java (necesario para Kotlin/Gradle)
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+
+    - name: Configurar Gradle
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: Ejecutar las pruebas unitarias
+      run: ./gradlew test
